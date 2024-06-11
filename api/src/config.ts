@@ -11,11 +11,9 @@ export type AppConfigType = z.infer<typeof AppConfigSchema>
 export default async (): Promise<AppConfigType> => {
   const configObject: AppConfigType = {
     api: {
-      apiPort: Number(process.env.PORT),
+      apiPort: Number(process.env.API_PORT),
     },
   }
 
-  const result = await AppConfigSchema.parseAsync(configObject)
-
-  return result
+  return await AppConfigSchema.parseAsync(configObject)
 }

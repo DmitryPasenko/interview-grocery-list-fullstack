@@ -1,0 +1,76 @@
+version: '3.9'
+
+services:
+
+  db:
+    image: postgres:13
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_PASSWORD: password1
+      POSTGRES_DB: goji_interview
+      POSTGRES_USER: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U admin -d goji_interview -h localhost || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+  api:
+    build: .
+    restart: always
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      API_PORT: ${API_PORT}
+      NODE_ENV: ${NODE_ENV}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${API_PORT}:${API_PORT}"
+    volumes:
+      - .:/app
+    command: yarn start
+
+
+  migrate:
+    image: node:18
+    working_dir: /app
+    volumes:
+      - .:/app
+      - ./node_modules:/app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["npx", "prisma", "migrate", "deploy"]
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+
+  seed:
+    image: node:18
+    working_dir: /app
+    volumes:
+      - ./prisma:/app
+      - ./node_modules:/app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    command: node seed.cjs
+    environment:
+      DATABASE_URL: postgres://admin:password1@db:5432/goji_interview
+
+volumes:
+  db_data:
