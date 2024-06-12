@@ -51,7 +51,67 @@ const groceryItems = [
     quantity: 0,
     priority: priority.MEDIUM,
   },
-]
+  {
+    name: 'Cheese',
+    quantity: 0,
+    priority: priority.HIGH,
+  },
+  {
+    name: 'Carrots',
+    quantity: 0,
+    priority: priority.MEDIUM,
+  },
+  {
+    name: 'Onions',
+    quantity: 0,
+    priority: priority.LOW,
+  },
+  {
+    name: 'Chicken',
+    quantity: 0,
+    priority: priority.HIGH,
+  },
+  {
+    name: 'Beef',
+    quantity: 0,
+    priority: priority.HIGH,
+  },
+  {
+    name: 'Fish',
+    quantity: 0,
+    priority: priority.HIGH,
+  },
+  {
+    name: 'Yogurt',
+    quantity: 0,
+    priority: priority.MEDIUM,
+  },
+  {
+    name: 'Cereal',
+    quantity: 0,
+    priority: priority.LOW,
+  },
+  {
+    name: 'Rice',
+    quantity: 0,
+    priority: priority.NONE,
+  },
+  {
+    name: 'Pasta',
+    quantity: 0,
+    priority: priority.NONE,
+  },
+  {
+    name: 'Spinach',
+    quantity: 0,
+    priority: priority.LOW,
+  },
+  {
+    name: 'Butter',
+    quantity: 0,
+    priority: priority.LOWEST,
+  },
+];
 
 async function main() {
   await prisma.user.upsert({

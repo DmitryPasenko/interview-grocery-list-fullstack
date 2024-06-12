@@ -9,7 +9,7 @@ RUN yarn install
 
 COPY . .
 
-# Этот порт должен совпадать с API_PORT
+# must match API_PORT
 EXPOSE 4000
 
 CMD ["yarn", "start"]
