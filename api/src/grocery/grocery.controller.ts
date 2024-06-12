@@ -12,11 +12,9 @@ export class GroceryController {
 
   @Get()
   async filterGroceries(@Query() filter: FilterGroceryDto) {
-    const data = await this.groceryService.filterGroceries(filter)
+    const { page, pageSize, ...filters } = filter
 
-    return {
-      data,
-    }
+    return await this.groceryService.filterGroceries(filters, page, pageSize)
   }
 
   @Post()

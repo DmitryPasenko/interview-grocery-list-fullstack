@@ -3,9 +3,12 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { createGroceryItem, getGroceryList } from '@services/grocery'
 import { queryClient } from '@utils/client'
 
-export const useGroceryList = (params?: { priority?: number; status?: string; perPage?: number }, enabled = true) => {
+
+
+
+export const useGroceryList = (params?: GroceryListParams, enabled = true) => {
   return useQuery({
-    queryKey: ['groceryList'],
+    queryKey: ['groceryList' , params],
     queryFn: () => getGroceryList({ ...params }),
     enabled,
   })

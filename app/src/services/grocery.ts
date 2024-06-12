@@ -1,12 +1,19 @@
 import ky from 'ky'
 
-import { env } from '@constants/env'
+import {env} from '@constants/env'
+import {toStringParams} from "@utils/utils";
 
-export const getGroceryList = async (params: { priority?: number; status?: string; perPage?: number }) => {
-  const searchParams = new URLSearchParams(params as Record<string, string>)
-  const response = await ky.get(`${env.API_URL}/grocery`, { searchParams }).json<{ data: GroceryItem[] }>()
 
-  return response.data
+export const getGroceryList = async (params: GroceryListParams = {}): Promise<PaginatedResponse<GroceryItem>> => {
+  const { page = 1, pageSize = 10, ...otherParams } = params;
+
+  const searchParams = new URLSearchParams({
+    page: page.toString(),
+    pageSize: pageSize.toString(),
+    ...toStringParams(otherParams),
+  });
+
+  return await ky.get(`${env.API_URL}/grocery`, {searchParams}).json<PaginatedResponse<GroceryItem>>();
 }
 
 export const createGroceryItem = async (groceryItem: GroceryFormItem) => {
