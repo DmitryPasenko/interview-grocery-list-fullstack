@@ -23,8 +23,6 @@ const GroceryList: FC<{ isEditing?: boolean }> = ({ isEditing }) => {
 
   const { data, isLoading, isError, error } = useGroceryList({  page: page+1,  pageSize:rowsPerPage });
 
-
-  console.log(data?.data)
   const groceries = data?.data ?? [];
   const total = data?.total ?? 0;
 
